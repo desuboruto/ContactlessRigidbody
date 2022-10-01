@@ -11,8 +11,8 @@ namespace KuriKit.Rigidbodys {
         [SerializeField] public bool useGravity = false;
         [SerializeField, Min(0f)] float gravitiationalAccleleration = 9.8f;
         // positionはグローバル, rotationはローカル
-        public RigidbodyConstraints constraints { get; set; } = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionX;
-        
+        public RigidbodyConstraints constraints { get; set; } //= RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionX;
+
         // velocity
         public Vector3 velocity { get; set; } = Vector3.zero;
         // torque
@@ -31,6 +31,13 @@ namespace KuriKit.Rigidbodys {
         // ineriaTensor
         // inertiaTensorRotation
         // sleepThreshold
+
+        public enum ForceMode {
+            Force,
+            Acceleration,
+            Impulse,
+            VelocityChange,
+        }
 
         public void AddForce(Vector3 force/*, ForceMode mode = ForceMode.Force*/) {
             this.velocity += force;
@@ -78,7 +85,7 @@ namespace KuriKit.Rigidbodys {
             UpdateRotation(Time.deltaTime);
         }
         void OnDrawGizmosSelected() {
-            Gizmos.DrawLine(this.transform.position, this.transform.position + this.transform.TransformVector(this.localTorque));
+            Gizmos.DrawLine(this.transform.position, this.transform.position + this.transform.TransformVector(this.velocity));
         }
 
         private void UpdatePosition(float deltaTime) {
