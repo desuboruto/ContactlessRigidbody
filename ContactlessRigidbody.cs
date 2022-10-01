@@ -14,7 +14,8 @@ namespace KuriKit.Rigidbodys {
         public RigidbodyConstraints constraints { get; set; } //= RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionX;
 
         // velocity
-        public Vector3 velocity { get; set; } = Vector3.zero;
+         public Vector3 velocity { get; set; } = Vector3.zero;
+
         // torque
         public Vector3 localTorque {
             get { return this._localTorque; }
@@ -26,8 +27,29 @@ namespace KuriKit.Rigidbodys {
         private Vector3 _localTorque;
         private float _localTorqueMagnitude;
         // angularVelocity
+
         // centerOfMass
+        private Vector3 centerOfMass
+        {
+            get
+            {
+                return this.centerOfMass;
+            }
+            set
+            {
+                this.centerOfMass += value;
+            }
+        }
+
         // worldOfMass
+        private Vector3 worldOfMass
+        {
+            get
+            {
+                return this.transform.TransformVector(this.centerOfMass);
+            }
+        }
+
         // ineriaTensor
         // inertiaTensorRotation
         // sleepThreshold
@@ -151,7 +173,9 @@ namespace KuriKit.Rigidbodys {
             {
                 this.openInfo = EditorGUILayout.Foldout(this.openInfo, "Info");
                 if (this.openInfo) {
-
+                    EditorGUILayout.DoubleField("Speed", _target.velocity.magnitude);
+                    EditorGUILayout.Vector3Field("Velocity", _target.velocity);
+                    
                 }
             }
             EditorGUILayout.Space(8);
